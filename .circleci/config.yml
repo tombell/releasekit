@@ -3,8 +3,47 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.9
-
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
-      - run: make all
+      - run: echo "Building..."
+
+  build-release:
+    docker:
+      - image: circleci/golang:1.9
+    working_directory: /go/src/github.com/tombell/releasekit
+    steps:
+      - checkout
+      - run: echo "Building Release (${CIRCLE_TAG})..."
+
+  deploy:
+    docker:
+      - image: circleci/golang:1.9
+    working_directory: /go/src/github.com/tombell/releasekit
+    steps:
+      - run: echo "Deploying Release (${CIRCLE_TAG})..."
+
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              ignore: /.*/
+      - build-release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build-release
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
