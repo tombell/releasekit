@@ -1,5 +1,7 @@
 # releasekit
 
+[![CircleCI](https://circleci.com/gh/tombell/releasekit/tree/master.svg?style=svg)](https://circleci.com/gh/tombell/releasekit/tree/master)
+
 Create or update GitHub releases based on closed issues and/or merged pull
 requests.
 
