@@ -6,7 +6,7 @@ jobs:
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
-      - run: echo "Building..."
+      - run: make dev
 
   build-release:
     docker:
@@ -14,14 +14,31 @@ jobs:
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
-      - run: echo "Building Release (${CIRCLE_TAG})..."
+      - run: |
+          VERSION="${CIRCLE_TAG}" make dist dev
+      - save_cache:
+          key: dist-{{ .Revision }}
+          paths:
+            - dist/
 
   deploy:
     docker:
       - image: circleci/golang:1.9
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
-      - run: echo "Deploying Release (${CIRCLE_TAG})..."
+      - checkout
+      - restore_cache:
+          keys:
+            - dist-{{ .Revision }}
+      - run: |
+          dist/releasekit -t ${GITHUB_TOKEN} \
+                          -o tombell \
+                          -r releasekit \
+                          -p $(git tag | sort -V | tail -2 | head -1) \
+                          -n ${CIRCLE_TAG} \
+                          --attachment dist/releasekit-linux-amd64 \
+                          --attachment dist/releasekit-darwin-amd64 \
+                          --attachment dist/releasekit-windows-amd64 \
 
 workflows:
   version: 2
