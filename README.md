@@ -31,13 +31,13 @@ advised you create a token specifically for **releasekit**.
 To create a new release, the tag you want to cut a release for should be pushed
 to GitHub.
 
-    releasekit -t $GITHUB_TOKEN -o tombell -r releasekit -p v0.1.0 -n v0.2.0 --print
+    releasekit -t $GITHUB_TOKEN -o tombell -r releasekit -p v0.1.0 -n v0.2.0 --dry
 
 This will print then release notes for `v0.2.0`, and will generate the notes
 from closed issues and merged pull requests between `v0.1.0` and `v0.2.0`.
 
 If you're happy with the release notes, you can rerun the command omitting the
-`--print` flag. This will go ahead and create the release on the GitHub
+`--dry` flag. This will go ahead and create the release on the GitHub
 repository.
 
 ### Updating a Release

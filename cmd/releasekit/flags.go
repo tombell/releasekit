@@ -14,6 +14,8 @@ var options struct {
 	Prev string `short:"p" long:"previous" description:"Previous release tag" value-name:"GIT_TAG"`
 	Next string `short:"n" long:"next" description:"Next release tag" required:"true" value-name:"GIT_TAG"`
 
+	Dry bool `long:"dry" description:"Outputs the release notes instead of creating or updating"`
+
 	Draft      bool `long:"draft" description:"Mark release as draft"`
 	Prerelease bool `long:"prerelease" description:"Mark release as prerelease"`
 
@@ -21,7 +23,6 @@ var options struct {
 	Watched     []string `long:"watch" description:"File path to watch for changes" value-name:"FILE_PATH"`
 
 	Verbose bool `short:"v" long:"verbose" description:"Verbose debug output"`
-	Print   bool `long:"print" description:"Print the release body"`
 }
 
 var (

@@ -133,7 +133,7 @@ func main() {
 	printIfVerbose("Generating release body...\n")
 	body := generateReleaseBody(issues, changed, *comparison.HTMLURL)
 
-	if options.Print {
+	if options.Dry {
 		fmt.Println()
 		fmt.Println(body)
 		return
