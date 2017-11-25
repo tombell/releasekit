@@ -27,12 +27,12 @@ func printIfVerbose(format string, a ...interface{}) {
 }
 
 // exitIfError will fatal log if the error is not nil.
-func exitIfError(err error) {
+func exitIfError(err error, msg string) {
 	if err == nil {
 		return
 	}
 
-	log.Fatal(err)
+	log.Fatal(fmt.Sprintf("%s:\n%s", msg, err))
 }
 
 // generateReleaseBody generates the release body from the slice of issues.
@@ -70,27 +70,29 @@ func main() {
 	if previous == "" || previous == next {
 		printIfVerbose("Fetching first commit...\n")
 		commit, err := releasekit.GetFirstCommit(client, owner, repo)
-		exitIfError(err)
+		exitIfError(err, "Could not fetch first commit")
+
 		sha := *commit.SHA
 		previous = sha[:8]
 	} else {
 		printIfVerbose("Fetching commit for tag (%s)...\n", previous)
 		base, err := releasekit.GetCommitForTag(client, owner, repo, previous)
-		exitIfError(err)
+		exitIfError(err, "Could not fetch commit for tag")
+
 		since = base.Commit.Author.Date.Add(-24 * time.Hour)
 	}
 
 	printIfVerbose("Fetching closed issues...\n")
 	issues, err := releasekit.FetchClosedIssuesSince(client, owner, repo, since)
-	exitIfError(err)
+	exitIfError(err, "Could not fetch closed issues")
 
 	printIfVerbose("Fetching commit for tag (%s)...\n", next)
 	head, err := releasekit.GetCommitForTag(client, owner, repo, next)
-	exitIfError(err)
+	exitIfError(err, "Could not fetch commit for tag")
 
 	printIfVerbose("Fetching commit comparison (%s...%s)...\n", previous, next)
 	comparison, err := releasekit.GetComparison(client, owner, repo, previous, next)
-	exitIfError(err)
+	exitIfError(err, "Could not fetch commit comparison")
 
 	if !since.IsZero() {
 		printIfVerbose("Filtering out issues closed before %s...\n", since)
@@ -141,7 +143,7 @@ func main() {
 
 	printIfVerbose("Checking for existing release for tag (%s)...\n", next)
 	release, err := releasekit.GetReleaseByTag(client, owner, repo, next)
-	exitIfError(err)
+	exitIfError(err, "Could not check for existing release")
 
 	if release == nil {
 		release = &github.RepositoryRelease{}
@@ -161,12 +163,12 @@ func main() {
 	}
 
 	release, err = releasekit.CreateOrEditRelease(client, owner, repo, release)
-	exitIfError(err)
+	exitIfError(err, "Could not create or update release")
 
 	if len(attachments) > 0 {
 		printIfVerbose("Uploading release assets...\n")
 		err = releasekit.UploadReleaseAssets(client, owner, repo, *release.ID, attachments)
-		exitIfError(err)
+		exitIfError(err, "Could not upload release assets")
 	}
 
 	fmt.Println(*release.HTMLURL)
