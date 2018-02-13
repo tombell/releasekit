@@ -11,14 +11,14 @@ PACKAGE=./cmd/releasekit
 all: dev
 
 clean:
-	rm -fr dist/*
+	rm -fr dist/
 
 dev: build
 
 dist: linux darwin windows
 
 build:
-	go build ${LDFLAGS} -o dist/releasekit ./cmd/releasekit
+	go build ${LDFLAGS} -o dist/${BINARY} ${PACKAGE}
 
 linux:
 	GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o dist/${BINARY}-linux-${GOARCH} ${PACKAGE}
