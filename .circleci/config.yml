@@ -1,5 +1,6 @@
 version: 2
 jobs:
+  # build cmd/releasekit
   build:
     docker:
       - image: circleci/golang:1.9
@@ -8,6 +9,7 @@ jobs:
       - checkout
       - run: make dev
 
+  # build cmd/coin with VERSION set to git tag
   build-release:
     docker:
       - image: circleci/golang:1.9
@@ -21,7 +23,8 @@ jobs:
           paths:
             - dist/
 
-  deploy:
+  # run releasekit to generate release notes and attach build artifacts
+  release:
     docker:
       - image: circleci/golang:1.9
     working_directory: /go/src/github.com/tombell/releasekit
@@ -56,7 +59,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /.*/
-      - deploy:
+      - release:
           requires:
             - build-release
           filters:
