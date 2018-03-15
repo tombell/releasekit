@@ -1,6 +1,7 @@
 # releasekit
 
 [![CircleCI](https://circleci.com/gh/tombell/releasekit/tree/master.svg?style=svg)](https://circleci.com/gh/tombell/releasekit/tree/master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftombell%2Freleasekit.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftombell%2Freleasekit?ref=badge_shield)
 
 Create or update GitHub releases based on closed issues and/or merged pull
 requests.
@@ -90,3 +91,7 @@ times to watch multiple files.
 
 This will include an additional section at the bottom of the release listing
 these files if they've changed, and a link to the compare page on GitHub.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftombell%2Freleasekit.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftombell%2Freleasekit?ref=badge_large)
