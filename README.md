@@ -13,6 +13,10 @@ You can also `go get` to install from source.
 
     go get -u github.com/tombell/releasekit/cmd/releasekit
 
+On macOS you can use [Homebrew](https://brew.sh) to install.
+
+    brew tap tombell/formulae && brew install releasekit
+
 [releases]: https://github.com/tombell/releasekit/releases
 
 ## Usage
