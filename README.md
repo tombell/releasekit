@@ -11,7 +11,7 @@ pre-built binary for your system.
 
 You can also `go get` to install from source.
 
-    go get github.com/tombell/releasekit
+    go get -u github.com/tombell/releasekit/cmd/releasekit
 
 [releases]: https://github.com/tombell/releasekit/releases
 
