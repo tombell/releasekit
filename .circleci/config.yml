@@ -3,7 +3,7 @@ jobs:
   # build cmd/releasekit
   build:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.10.1
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
@@ -12,7 +12,7 @@ jobs:
   # build cmd/coin with VERSION set to git tag
   build-release:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.10.1
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
@@ -26,7 +26,7 @@ jobs:
   # run releasekit to generate release notes and attach build artifacts
   release:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.10.1
     working_directory: /go/src/github.com/tombell/releasekit
     steps:
       - checkout
@@ -41,7 +41,7 @@ jobs:
                           -n ${CIRCLE_TAG} \
                           --attachment dist/releasekit-linux-amd64 \
                           --attachment dist/releasekit-darwin-amd64 \
-                          --attachment dist/releasekit-windows-amd64 \
+                          --attachment dist/releasekit-windows-amd64
 
 workflows:
   version: 2
