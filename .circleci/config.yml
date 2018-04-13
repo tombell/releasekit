@@ -34,6 +34,8 @@ jobs:
           keys:
             - dist-{{ .Revision }}
       - run: |
+          go get -u github.com/tombell/brewer/cmd/brewer
+      - run: |
           dist/releasekit -t ${GITHUB_TOKEN} \
                           -o tombell \
                           -r releasekit \
@@ -42,6 +44,16 @@ jobs:
                           --attachment dist/releasekit-linux-amd64 \
                           --attachment dist/releasekit-darwin-amd64 \
                           --attachment dist/releasekit-windows-amd64
+      - run: |
+          brewer --token ${GITHUB_TOKEN} \
+                 --owner tombell \
+                 --name homebrew-formulae \
+                 --formula Formula/releasekit.rb \
+                 --tag ${CIRCLE_TAG} \
+                 --revision ${CIRCLE_SHA1} \
+                 --commit-message "Update Formula/releasekit.rb to ${CIRCLE_TAG}" \
+                 --commit-author "Tom Bell" \
+                 --commit-email "tomb@tomb.io"
 
 workflows:
   version: 2
