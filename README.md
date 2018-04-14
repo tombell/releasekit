@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/tombell/releasekit/tree/master.svg?style=svg)](https://circleci.com/gh/tombell/releasekit/tree/master)
 
-Create GitHub releases from closed issues and pull requests.
+Command-line app to create GitHub releases.
 
 ## Installation
 
