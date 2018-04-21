@@ -13,12 +13,12 @@ all: dev
 clean:
 	rm -fr dist/
 
-dev: build
+dev:
+	go build ${LDFLAGS} -o dist/${BINARY} ${PACKAGE}
 
 dist: linux darwin windows
 
 build:
-	go build ${LDFLAGS} -o dist/${BINARY} ${PACKAGE}
 
 linux:
 	GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o dist/${BINARY}-linux-${GOARCH} ${PACKAGE}
@@ -29,4 +29,4 @@ darwin:
 windows:
 	GOOS=windows GOARCH=${GOARCH} go build ${LDFLAGS} -o dist/${BINARY}-windows-${GOARCH} ${PACKAGE}
 
-.PHONY: all clean dev dist build linux darwin windows
+.PHONY: all clean dev dist linux darwin windows
