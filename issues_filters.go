@@ -152,7 +152,9 @@ func FilterMergedPullsAfter(issues []*github.Issue, commits []github.RepositoryC
 		if matches != nil {
 			var pr string
 
-			if matches[3] != "" {
+			if matches[4] != "" {
+				pr = matches[4]
+			} else if matches[2] != "" && matches[3] != "" {
 				pr = matches[3]
 			} else if matches[1] != "" {
 				pr = matches[1]
