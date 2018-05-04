@@ -13,7 +13,18 @@ func GetCommitForTag(c *github.Client, owner, repo, tag string) (*github.Reposit
 		return nil, err
 	}
 
-	commit, _, err := c.Repositories.GetCommit(context.Background(), owner, repo, *ref.Object.SHA)
+	sha := *ref.Object.SHA
+
+	if *ref.Object.Type == "tag" {
+		tag, _, err := c.Git.GetTag(context.Background(), owner, repo, *ref.Object.SHA)
+		if err != nil {
+			return nil, err
+		}
+
+		sha = *tag.Object.SHA
+	}
+
+	commit, _, err := c.Repositories.GetCommit(context.Background(), owner, repo, sha)
 	if err != nil {
 		return nil, err
 	}
