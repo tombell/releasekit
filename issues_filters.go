@@ -11,7 +11,7 @@ import (
 
 const (
 	closedByPullRequestRegex = `(?i)(close|closes|closed|resolve|resolves|resolved|fix|fixes|fixed) #([0-9]+)`
-	mergedPullRequestRegex   = `(?i)merge pull request #([0-9]+)|\(#([0-9]+)\)`
+	mergedPullRequestRegex   = `(?i)merge pull request #([0-9]+)|\(#([0-9]+)\)" \(#([0-9]+)\)|\(#([0-9]+)\)`
 )
 
 // FilterClosedBefore filters out all issues that were closed after the
@@ -152,10 +152,10 @@ func FilterMergedPullsAfter(issues []*github.Issue, commits []github.RepositoryC
 		if matches != nil {
 			var pr string
 
-			if matches[1] != "" {
+			if matches[3] != "" {
+				pr = matches[3]
+			} else if matches[1] != "" {
 				pr = matches[1]
-			} else if matches[2] != "" {
-				pr = matches[2]
 			}
 
 			num, _ := strconv.Atoi(pr)
