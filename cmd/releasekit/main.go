@@ -11,13 +11,10 @@ import (
 	"github.com/tombell/releasekit"
 )
 
-// printVersion will print the version, and commit SHA for the build.
 func printVersion() {
 	fmt.Printf("releasekit %s (%s)\n", Version, Commit)
 }
 
-// printIfVerbose will print out the formatted string if the verbose flag is
-// enabled.
 func printIfVerbose(format string, a ...interface{}) {
 	if !verbose {
 		return
@@ -26,37 +23,12 @@ func printIfVerbose(format string, a ...interface{}) {
 	fmt.Printf(format, a...)
 }
 
-// exitIfError will fatal log if the error is not nil.
 func exitIfError(err error, msg string) {
 	if err == nil {
 		return
 	}
 
 	log.Fatal(fmt.Sprintf("%s:\n%s", msg, err))
-}
-
-// generateReleaseBody generates the release body from the slice of issues.
-func generateReleaseBody(issues []*github.Issue, changed []string, compare string) string {
-	if len(issues) == 0 {
-		return "New Release"
-	}
-
-	output := "## Changes\n"
-
-	for _, issue := range issues {
-		output += fmt.Sprintf("* [#%d](%s) - %v (@%v)\n", *issue.Number, *issue.HTMLURL, *issue.Title, *issue.User.Login)
-	}
-
-	if len(changed) > 0 {
-		output += "\n### Watched File Changes\n"
-		output += fmt.Sprintf("Changes: %s\n", compare)
-
-		for _, file := range changed {
-			output += fmt.Sprintf("* %s\n", file)
-		}
-	}
-
-	return output
 }
 
 func main() {
@@ -133,7 +105,7 @@ func main() {
 	}
 
 	printIfVerbose("Generating release body...\n")
-	body := generateReleaseBody(issues, changed, *comparison.HTMLURL)
+	body := releasekit.GenerateReleaseBody(issues, changed, *comparison.HTMLURL)
 
 	if options.Dry {
 		fmt.Println()

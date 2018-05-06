@@ -2,12 +2,37 @@ package releasekit
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 
 	"github.com/google/go-github/github"
 )
+
+// GenerateReleaseBody generates the body of the release notes.
+func GenerateReleaseBody(issues []*github.Issue, changed []string, compare string) string {
+	if len(issues) == 0 {
+		return "New Release"
+	}
+
+	output := "## Changes\n"
+
+	for _, issue := range issues {
+		output += fmt.Sprintf("* [#%d](%s) - %v (@%v)\n", *issue.Number, *issue.HTMLURL, *issue.Title, *issue.User.Login)
+	}
+
+	if len(changed) > 0 {
+		output += "\n### Watched File Changes\n"
+		output += fmt.Sprintf("Changes: %s\n", compare)
+
+		for _, file := range changed {
+			output += fmt.Sprintf("* %s\n", file)
+		}
+	}
+
+	return output
+}
 
 // GetReleaseByTag returns a repository release for the given tag if it exists.
 func GetReleaseByTag(c *github.Client, owner, repo, tag string) (*github.RepositoryRelease, error) {
