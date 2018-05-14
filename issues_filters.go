@@ -58,6 +58,10 @@ func FilterClosedByPull(issues []*github.Issue) []*github.Issue {
 			continue
 		}
 
+		if issue.Body == nil {
+			continue
+		}
+
 		matches := r.FindStringSubmatch(*issue.Body)
 		if matches != nil {
 			num, _ := strconv.Atoi(matches[len(matches)-1])
