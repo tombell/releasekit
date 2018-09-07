@@ -19,6 +19,7 @@ var options struct {
 	Draft      bool `long:"draft" description:"Mark release as draft"`
 	Prerelease bool `long:"prerelease" description:"Mark release as prerelease"`
 
+	Labels      []string `long:"label" description:"Label to include in notes, if PR/issue has the label" value-name:"LABEL"`
 	Attachments []string `long:"attachment" description:"File path to attach release asset" value-name:"FILE_PATH"`
 	Watched     []string `long:"watch" description:"File path to watch for changes" value-name:"FILE_PATH"`
 
@@ -33,6 +34,7 @@ var (
 	next        string
 	draft       bool
 	prerelease  bool
+	labels      []string
 	attachments []string
 	watched     []string
 )
@@ -57,6 +59,7 @@ func parseFlags() {
 	next = options.Next
 	prerelease = options.Prerelease
 	draft = options.Draft
+	labels = options.Labels
 	attachments = options.Attachments
 	watched = options.Watched
 }

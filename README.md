@@ -53,7 +53,7 @@ additional flags.
 This will update the existing `v0.2.0` release created above, it will also
 attach the `docs/api.md` file as a release asset when updating.
 
-### Draft and Prerelease Releases
+### Draft and Pre-Release Releases
 
 To mark a release as a draft you can use the `--draft` flag. This will create
 the release as a draft, and not associate it with a tag name.
@@ -64,13 +64,23 @@ There are some limitations when using the `--draft` flag, if you rerun the
 command without the `--draft` flag, it will create a new release but not remove
 the old draft.
 
-To mark a release as a prerelease you can use the `--prerelease` flag. This will
-create or update a release as a prerelease.
+To mark a release as a pre-release you can use the `--prerelease` flag. This will
+create or update a release as a pre-release.
 
     releasekit -t $GITHUB_TOKEN -o tombell -r releasekit -p v0.1.0 -n v0.2.0 --prerelease
 
 You can rerun the command without the `--prerelease` flag, to remove the
-prerelease mark from the release.
+pre-release mark from the release.
+
+### Including Labels
+
+If you would like to highlight specific labels on pull requests/issues in the
+release notes, you can use the `--label` flag.
+
+    releasekit -t $GITHUB_TOKEN -o tombell -r releasekit -p v0.1.0 -n v0.2.0 --label bug
+
+The release on GitHub would then have **bug** next to any item that had the
+_bug_ label.
 
 ### Attaching Release Assets
 

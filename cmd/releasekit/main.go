@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/google/go-github/github"
@@ -36,7 +37,7 @@ func exitIfError(err error, msg string) {
 }
 
 // generateReleaseBody generates the release body from the slice of issues.
-func generateReleaseBody(issues []*github.Issue, changed []string, compare string) string {
+func generateReleaseBody(issues []*github.Issue, changed []string, compare string, labels []string) string {
 	if len(issues) == 0 {
 		return "New Release"
 	}
@@ -44,7 +45,22 @@ func generateReleaseBody(issues []*github.Issue, changed []string, compare strin
 	output := "## Changes\n"
 
 	for _, issue := range issues {
-		output += fmt.Sprintf("* [#%d](%s) - %v (@%v)\n", *issue.Number, *issue.HTMLURL, *issue.Title, *issue.User.Login)
+		output += fmt.Sprintf("* [#%d](%s) - %v", *issue.Number, *issue.HTMLURL, *issue.Title)
+
+		var include []string
+
+		for _, label := range labels {
+			if hasLabel(issue, label) {
+				include = append(include, fmt.Sprintf("**%s**", label))
+			}
+		}
+
+		if len(include) > 0 {
+			output += fmt.Sprintf(" %s", strings.Join(include, ", "))
+		}
+
+		output += fmt.Sprintf(" (@%v)", *issue.User.Login)
+		output += "\n"
 	}
 
 	if len(changed) > 0 {
@@ -57,6 +73,16 @@ func generateReleaseBody(issues []*github.Issue, changed []string, compare strin
 	}
 
 	return output
+}
+
+func hasLabel(issue *github.Issue, label string) bool {
+	for _, l := range issue.Labels {
+		if *l.Name == label {
+			return true
+		}
+	}
+
+	return false
 }
 
 func main() {
@@ -133,7 +159,7 @@ func main() {
 	}
 
 	printIfVerbose("Generating release body...\n")
-	body := generateReleaseBody(issues, changed, *comparison.HTMLURL)
+	body := generateReleaseBody(issues, changed, *comparison.HTMLURL, labels)
 
 	if options.Dry {
 		fmt.Println()
