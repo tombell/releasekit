@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v18/github"
 )
 
 // GetReleaseByTag returns a repository release for the given tag if it exists.
@@ -39,7 +39,7 @@ func CreateOrEditRelease(c *github.Client, owner, repo string, release *github.R
 }
 
 // UploadReleaseAssets uploads the files to the release as assets.
-func UploadReleaseAssets(c *github.Client, owner, repo string, id int, attachments []string) error {
+func UploadReleaseAssets(c *github.Client, owner, repo string, id int64, attachments []string) error {
 	for _, attachment := range attachments {
 		f, err := os.OpenFile(attachment, os.O_RDONLY, 0644)
 		if err != nil {

@@ -3,7 +3,7 @@ package releasekit
 import (
 	"context"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v18/github"
 )
 
 // GetPullRequest gets the pull request with the specified number.
