@@ -31,7 +31,9 @@ advised you create a token specifically for **releasekit**.
 
 ### Generating a new Github API token
 
-Visit the [Developer Settings](https://github.com/settings/tokens/new) and click to generate a new **Personal access token**. If your repository is private, select the `repo` scope, otherwise `public_repo` will do just fine.
+Visit the [Developer Settings](https://github.com/settings/tokens/new) and
+click to generate a new **Personal access token**. If your repository is
+private, select the `repo` scope, otherwise `public_repo` will do just fine.
 
 ### Creating a Release
 
