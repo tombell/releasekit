@@ -29,7 +29,7 @@ advised you create a token specifically for **releasekit**.
 
 [api-token]: https://github.com/settings/tokens
 
-### Generating a new Github API token
+### Generating a New Github API Token
 
 Visit the [Developer Settings](https://github.com/settings/tokens/new) and
 click to generate a new **Personal access token**. If your repository is
