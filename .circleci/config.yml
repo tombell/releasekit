@@ -2,15 +2,15 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.11.0
+      - image: circleci/golang:1.11.1
     steps:
       - checkout
       - run: make test
-      - run: make cibuild
+      - run: make
 
   build-release:
     docker:
-      - image: circleci/golang:1.11.0
+      - image: circleci/golang:1.11.1
     steps:
       - checkout
       - run: VERSION="${CIRCLE_TAG}" make dist dev
@@ -21,7 +21,7 @@ jobs:
 
   upload-release:
     docker:
-      - image: circleci/golang:1.11.0
+      - image: circleci/golang:1.11.1
     steps:
       - checkout
       - restore_cache:
@@ -51,7 +51,7 @@ jobs:
 
 workflows:
   version: 2
-  build-n-deploy:
+  build-n-upload:
     jobs:
       - build:
           filters:
