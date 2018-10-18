@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/tombell/releasekit/tree/master.svg?style=svg)](https://circleci.com/gh/tombell/releasekit/tree/master)
 
-Command-line app to create GitHub releases.
+CLI app to create GitHub releases based on issues and pull requests.
 
 ## Installation
 
