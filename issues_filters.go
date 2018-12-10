@@ -35,7 +35,7 @@ func FilterClosedAfter(issues []*github.Issue, d time.Time) []*github.Issue {
 
 	// add some leniency for difference between tagging/merging pull request
 	// creating the commit
-	time := d.Add(2 * time.Second)
+	time := d.Add(2 * time.Minute)
 
 	for _, issue := range issues {
 		if issue.ClosedAt.Before(time) {
