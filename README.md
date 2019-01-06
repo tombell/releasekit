@@ -1,7 +1,5 @@
 # releasekit
 
-[![CircleCI](https://circleci.com/gh/tombell/releasekit/tree/master.svg?style=svg)](https://circleci.com/gh/tombell/releasekit/tree/master)
-
 CLI app to create GitHub releases based on issues and pull requests.
 
 ## Installation
