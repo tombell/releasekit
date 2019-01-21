@@ -7,6 +7,8 @@ CLI app to create GitHub releases based on issues and pull requests.
 To get the most up to date binaries, check [the releases][releases] for the
 pre-built binary for your system.
 
+[releases]: https://github.com/tombell/releasekit/releases
+
 You can also `go get` to install from source.
 
     go get -u github.com/tombell/releasekit/cmd/releasekit
@@ -14,8 +16,6 @@ You can also `go get` to install from source.
 On macOS you can use [Homebrew](https://brew.sh) to install.
 
     brew tap tombell/formulae && brew install tombell/formulae/releasekit
-
-[releases]: https://github.com/tombell/releasekit/releases
 
 ## Usage
 
