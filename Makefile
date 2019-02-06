@@ -4,8 +4,7 @@ COMMIT=$(shell git rev-parse HEAD | cut -c -8)
 LDFLAGS=-ldflags "-X main.Version=${VERSION} -X main.Commit=${COMMIT}"
 MODFLAGS=-mod=vendor
 
-BINARY=releasekit
-PACKAGE=./cmd/releasekit
+PLATFORMS:=darwin linux windows
 
 all: dev
 
@@ -13,18 +12,12 @@ clean:
 	rm -fr dist/
 
 dev:
-	go build ${MODFLAGS} ${LDFLAGS} -o dist/${BINARY} ${PACKAGE}
+	go build ${MODFLAGS} ${LDFLAGS} -o dist/releasekit ./cmd/releasekit
 
-dist: darwin linux windows
+dist: $(PLATFORMS)
 
-darwin:
-	GOOS=darwin GOARCH=amd64 go build ${LDFLAGS} -o dist/${BINARY}-darwin-amd64 ${PACKAGE}
-
-linux:
-	GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o dist/${BINARY}-linux-amd64 ${PACKAGE}
-
-windows:
-	GOOS=windows GOARCH=amd64 go build ${LDFLAGS} -o dist/${BINARY}-windows-amd64 ${PACKAGE}
+$(PLATFORMS):
+	GOOS=$@ GOARCH=amd64 go build ${MODFLAGS} ${LDFLAGS} -o dist/releasekit-$@-amd64 ./cmd/releasekit
 
 test:
 	go test ${MODFLAGS} ./...
