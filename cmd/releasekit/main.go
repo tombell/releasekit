@@ -14,7 +14,7 @@ import (
 
 // printVersion will print the version, and commit SHA for the build.
 func printVersion() {
-	fmt.Printf("releasekit %s (%s)\n", Version, Commit)
+	fmt.Printf("releasekit %s (%s)\n", version, commit)
 }
 
 // printIfVerbose will print out the formatted string if the verbose flag is

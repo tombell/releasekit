@@ -22,4 +22,4 @@ $(PLATFORMS):
 test:
 	go test ${MODFLAGS} ./...
 
-.PHONY: all clean dev dist darwin linux windows test
+.PHONY: all clean dev dist $(PLATFORMS) test
