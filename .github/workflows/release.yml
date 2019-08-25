@@ -39,7 +39,7 @@ jobs:
       run: |
         dist/releasekit-linux-amd64 -t ${GITHUB_TOKEN} \
                                     -o tombell \
-                                    -r zengarden \
+                                    -r releasekit \
                                     -p $(git tag | sort -V | tail -2 | head -1) \
                                     -n "$(basename ${GITHUB_REF})" \
                                     --attachment dist/releasekit-linux-amd64 \
