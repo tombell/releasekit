@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - '!*'
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Set up Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.12
+      id: go
+
+    - name: Install tools
+      run: |
+        go get -u github.com/tombell/brewer/cmd/brewer
+      env:
+        GO111MODULE: on
+        GOPATH: /home/runner/work/
+
+    - name: Build binaries
+      run: VERSION="$(basename ${GITHUB_REF})" make dist
+
+    - name: Generate release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GOPATH: /home/runner/work/
+      run: |
+        dist/releasekit-linux-amd64 -t ${GITHUB_TOKEN} \
+                                    -o tombell \
+                                    -r zengarden \
+                                    -p $(git tag | sort -V | tail -2 | head -1) \
+                                    -n "$(basename ${GITHUB_REF})" \
+                                    --attachment dist/releasekit-linux-amd64 \
+                                    --attachment dist/releasekit-darwin-amd64 \
+                                    --attachment dist/releasekit-windows-amd64
+    - name: Update Homebrew formula
+      env:
+        FORMULA_GITHUB_TOKEN: ${{ secrets.FORMULA_GITHUB_TOKEN }}
+        GOPATH: /home/runner/work/
+      run: |
+        $GOPATH/bin/brewer --token ${FORMULA_GITHUB_TOKEN} \
+                           --owner tombell \
+                           --name homebrew-formulae \
+                           --formula Formula/releasekit.rb \
+                           --tag "$(basename ${GITHUB_REF})" \
+                           --revision "${GITHUB_SHA}" \
+                           --commit-message "Update Formula/releasekit.rb to $(basename ${GITHUB_REF})" \
+                           --commit-author "Tom Bell" \
+                           --commit-email "tomb@tomb.io"
